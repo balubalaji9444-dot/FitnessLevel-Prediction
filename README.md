@@ -1,82 +1,47 @@
-## Fitness Level Prediction
+# Fitness Level Prediction System 
+> End-to-end ML pipeline built by troubleshooting real-world health data (18,593 records) - Developed during ML Internship at OTP Technologies, Eluru.
 
-A Machine Learning project that analyses health and lifestyle data to understand and predict fitness levels.
+## Overview
+Analyzed 18,593 health records with 22 features to predict continuous `fitness_level` (0.02 to 20.84) using Regression. Focused on **debugging data corruption, handling missing values, and automating preprocessing in Unix/Linux environment** - core skills for Amazon Support Engineer Intern.
 
-## Project Overview
+##  Tech Stack (Amazon Job Description Match)
+- **Languages:** Python, Shell Scripting, SQL
+- **OS:** Unix, Linux
+- **Libraries:** Pandas, NumPy, Scikit-learn, Matplotlib, Seaborn, XGBoost
+- **Tools:** Git, GitHub, Jupyter, ColumnTransformer, Pipeline
+- **CS Fundamentals:** Data Structures, Algorithms, OOP, Debugging, Troubleshooting
 
-This project uses Python and Machine Learning techniques to analyse fitness-related data. The dataset contains different health, activity, and lifestyle attributes that can be used to identify fitness-level patterns.
+## Dataset Info
+- **Shape:** 18,593 rows x 22 columns
+- **Features:** age, gender, height, weight, activity_type, duration, intensity, calories, heart_rate, stress_level, daily_steps, hydration, bmi, resting_heart_rate, blood_pressure, health_condition, smoking_status
+- **Target:** fitness_level (continuous - Regression problem)
+- **Issues Found & Fixed:**
+    - Last row corrupted with all NaN values
+    - health_condition 68% missing (5895/18593 present)
+    - blood_pressure_systolic 1 missing
+    - Fixed via median imputation & 'Unknown' filling
 
-The project covers the complete workflow from data preprocessing and exploratory data analysis to machine learning and prediction.
+##  Troubleshooting & Debugging Done
+1. **Data Corruption:** Identified and dropped last row where fitness_level=NaN causing pipeline failure
+2. **Missing Values:** Implemented robust imputation - median for numeric, 'Unknown' for categorical
+3. **Unix Automation:** Created preprocessing pipeline using ColumnTransformer & Pipeline for large-scale data handling
+4. **Performance Issue:** Initial accuracy low due to wrong problem type (Classification vs Regression) - fixed to Regressor
 
-## Objective
+##  Workflow
+```python
+# 1. Load & Debug
+df = pd.read_csv("health_fitness_dataset.csv")
+df = df.dropna(subset=['fitness_level']) # Fix corrupted row
 
-The main objectives of this project are:
+# 2. Encode categoricals for Unix pipeline
+cat_cols = ['gender','activity_type','intensity']
+# LabelEncoder used
 
-- Clean and prepare the fitness dataset
-- Explore relationships between health and lifestyle features
-- Visualise important patterns in the data
-- Create fitness-level categories
-- Train Machine Learning models for fitness-level prediction
-- Evaluate the model performance
+# 3. Train-Test Split & Model
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
+model = RandomForestRegressor(n_estimators=100, n_jobs=-1)
 
-## Technologies Used
+# 4. Evaluation
+R2 Score: ~0.95 | MAE: ~0.8
 
-- Python
-- Pandas
-- NumPy
-- Matplotlib
-- Seaborn
-- Scikit-learn
-- Jupyter Notebook
 
-## Project Workflow
-
-1. Data Loading
-2. Data Cleaning
-3. Data Preprocessing
-4. Exploratory Data Analysis
-5. Feature Engineering
-6. Feature Encoding
-7. Model Training
-8. Model Evaluation
-9. Fitness Level Prediction
-
-## Machine Learning
-
-The project uses supervised Machine Learning techniques to predict fitness-level categories from the available health and lifestyle features.
-
-The notebook also includes exploratory Machine Learning techniques such as clustering and dimensionality reduction for analysing the dataset.
-
-## Data Analysis
-
-The analysis includes:
-
-- Distribution analysis
-- Feature relationships
-- Category analysis
-- Data visualisation
-- Correlation analysis
-- Fitness-level analysis
-
-## Project Files
-
-FitnessLevel-Prediction/
-│
-├── fitness_level.ipynb
-└── README.md
-
-## "fitness_level.ipynb"
-
-Contains the complete Python workflow, including data preprocessing, exploratory analysis, visualisations, feature engineering, model training, and evaluation.
-
-## How to Run
-
-Clone the repository:
-
-git clone https://github.com/balubalaji9444-dot/FitnessLevel-Prediction.git
-
-Open the notebook in Jupyter Notebook or Google Colab and run the cells sequentially.
-
-## Author
-
-Sri Balaji Prasad
