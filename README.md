@@ -1,47 +1,43 @@
 # Fitness Level Prediction System 
-> End-to-end ML pipeline built by troubleshooting real-world health data (18,593 records) - Developed during ML Internship at OTP Technologies, Eluru.
+
+End-to-end Machine Learning pipeline for predicting fitness level from health data.
 
 ## Overview
-Analyzed 18,593 health records with 22 features to predict continuous `fitness_level` (0.02 to 20.84) using Regression. Focused on **debugging data corruption, handling missing values, and automating preprocessing in Unix/Linux environment** - core skills for Amazon Support Engineer Intern.
-
-##  Tech Stack (Amazon Job Description Match)
-- **Languages:** Python, Shell Scripting, SQL
-- **OS:** Unix, Linux
-- **Libraries:** Pandas, NumPy, Scikit-learn, Matplotlib, Seaborn, XGBoost
-- **Tools:** Git, GitHub, Jupyter, ColumnTransformer, Pipeline
-- **CS Fundamentals:** Data Structures, Algorithms, OOP, Debugging, Troubleshooting
+Analyzed 18,593 health records with 22 features to predict continuous `fitness_level` (0.02 to 20.84) using Regression models. The project focuses on real-world data challenges like data corruption, missing values, and automated preprocessing.
 
 ## Dataset Info
 - **Shape:** 18,593 rows x 22 columns
-- **Features:** age, gender, height, weight, activity_type, duration, intensity, calories, heart_rate, stress_level, daily_steps, hydration, bmi, resting_heart_rate, blood_pressure, health_condition, smoking_status
-- **Target:** fitness_level (continuous - Regression problem)
-- **Issues Found & Fixed:**
-    - Last row corrupted with all NaN values
-    - health_condition 68% missing (5895/18593 present)
-    - blood_pressure_systolic 1 missing
-    - Fixed via median imputation & 'Unknown' filling
+- **Target:** `fitness_level` (Continuous - Regression)
+- **Key Features:** age, gender, height, weight, activity_type, duration, intensity, calories_burned, heart_rate, stress_level, daily_steps, hydration, bmi, blood_pressure, health_condition, smoking_status
+- **Data Issues Fixed:**
+    - Last row corrupted with all NaN values - Dropped
+    - health_condition 68% missing - Filled with 'Unknown'
+    - blood_pressure_systolic 1 missing - Median imputation
 
-##  Troubleshooting & Debugging Done
-1. **Data Corruption:** Identified and dropped last row where fitness_level=NaN causing pipeline failure
-2. **Missing Values:** Implemented robust imputation - median for numeric, 'Unknown' for categorical
-3. **Unix Automation:** Created preprocessing pipeline using ColumnTransformer & Pipeline for large-scale data handling
-4. **Performance Issue:** Initial accuracy low due to wrong problem type (Classification vs Regression) - fixed to Regressor
+## Tech Stack
+- **Languages:** Python, SQL
+- **Libraries:** Pandas, NumPy, Scikit-learn, Matplotlib, Seaborn, XGBoost
+- **Tools:** Jupyter Notebook, Git, GitHub
 
-##  Workflow
+## Workflow
+1.  **Data Loading & Cleaning:** Removed corrupted rows, handled missing values
+2.  **EDA:** Analyzed distributions, correlations, outliers
+3.  **Preprocessing:** Label Encoding for categoricals, Scaling for numericals using ColumnTransformer & Pipeline
+4.  **Modeling:** Trained RandomForestRegressor, XGBoostRegressor
+5.  **Evaluation:** R2 Score and MAE
+
+## Results
+- **Best Model:** RandomForestRegressor
+- **R2 Score:** ~0.95
+- **MAE:** ~0.80
+- Achieved high accuracy after fixing classification vs regression issue
+
+## How to Run
 ```python
-# 1. Load & Debug
+# Install dependencies
+pip install pandas numpy scikit-learn matplotlib seaborn xgboost
+
+# Run pipeline
 df = pd.read_csv("health_fitness_dataset.csv")
-df = df.dropna(subset=['fitness_level']) # Fix corrupted row
-
-# 2. Encode categoricals for Unix pipeline
-cat_cols = ['gender','activity_type','intensity']
-# LabelEncoder used
-
-# 3. Train-Test Split & Model
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
-model = RandomForestRegressor(n_estimators=100, n_jobs=-1)
-
-# 4. Evaluation
-R2 Score: ~0.95 | MAE: ~0.8
-
+df = df.dropna(subset=['fitness_level'])
 
